@@ -1,4 +1,4 @@
-# django-starterkit — Production-ready Django Starter
+# django-starterkit — Ready-to-Use Django Project Boilerplate
 
 A ready-to-use Django project template for the rapid development and deployment of modern web applications.
 
