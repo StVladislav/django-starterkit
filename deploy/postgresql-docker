@@ -1,0 +1,18 @@
+docker run -d --rm \
+  --name django-postgres \
+  -e POSTGRES_USER=admin \
+  -e POSTGRES_PASSWORD=123 \
+  -e POSTGRES_DB=test_db \
+  -p 5432:5432 \
+  postgres:17.2 \
+  -c shared_buffers=256MB \
+  -c max_connections=200 \
+  -c statement_timeout=30000 \
+  -c idle_in_transaction_session_timeout=30000 \
+  -c shared_preload_libraries='pg_trgm'
+
+docker exec django-postgres psql -U admin -d test_db -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;"
+
+
+# IF U NEED SAVING DATA IN VOLUME
+# -v postgres_data:/var/lib/postgresql/data \

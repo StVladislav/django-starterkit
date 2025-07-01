@@ -1,0 +1,27 @@
+[Unit]
+Description=gunicorn daemon
+After=network.target
+
+[Service]
+User=root
+Group=root
+WorkingDirectory=/path/to/django/
+
+Environment="PYTHONPATH=/path/to/my/modules:$PYTHONPATH"
+EnvironmentFile=/path/to/prod.env
+
+ExecStart=/path/to/venv/bin/gunicorn \
+    --workers 2 \
+    --worker-class gevent \
+    --bind unix:/path/to/django/deploy/gunicorn.sock \
+    --capture-output \
+    --enable-stdio-inheritance \
+    --log-level info \
+    config.wsgi:application
+Restart=on-failure
+
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

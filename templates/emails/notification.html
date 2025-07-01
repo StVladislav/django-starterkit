@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{{ subject }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        background: #f6f8fa;
+        font-family: "Segoe UI", Arial, sans-serif;
+        padding: 0;
+        margin: 0;
+      }
+      .container {
+        max-width: 480px;
+        margin: 40px auto;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+        padding: 32px 24px;
+      }
+      h1 {
+        color: #2b6cb0;
+        font-size: 24px;
+        margin-bottom: 16px;
+      }
+      p {
+        color: #444;
+        font-size: 16px;
+        line-height: 1.5;
+      }
+      .footer {
+        margin-top: 32px;
+        font-size: 13px;
+        color: #888;
+        text-align: center;
+      }
+      .btn {
+        display: inline-block;
+        background: #2b6cb0;
+        color: #fff !important;
+        text-decoration: none;
+        padding: 12px 24px;
+        border-radius: 4px;
+        font-weight: 600;
+        margin-top: 24px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>{{ title }}</h1>
+      <p>{{ message }}</p>
+      {% if action_url %}
+      <a href="{{ action_url }}" class="btn">GET</a>
+      {% endif %}
+      <div class="footer">© {{ year }} St. Vladislav.</div>
+    </div>
+  </body>
+</html>

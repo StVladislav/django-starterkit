@@ -1,0 +1,10 @@
+Use this for local testing
+
+Run Redis using docker
+docker run -d --rm --name celery-redis -p 6379:6379 redis:7.4.2
+
+Run celery local on a windows machine:
+celery -A config worker --loglevel=info --pool=solo
+
+Run celery-beat local on a windows machine:
+celery -A config beat -S django --loglevel=debug

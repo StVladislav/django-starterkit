@@ -1,0 +1,24 @@
+[Unit]
+Description=Celery Beat Service
+After=network.target
+
+[Service]
+User=root
+Group=root
+WorkingDirectory=/path/to/django/
+
+Environment="DJANGO_SETTINGS_MODULE=config.settings"
+Environment="PYTHONPATH=/path/to/my/modules:$PYTHONPATH"
+EnvironmentFile=/path/to/prod.env
+
+ExecStart=/path/to/venv/bin/celery \
+    -A config beat \
+    -S django \
+    --loglevel=debug 
+
+Restart=always
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

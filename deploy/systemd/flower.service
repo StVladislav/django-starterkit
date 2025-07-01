@@ -1,0 +1,25 @@
+[Unit]
+Description=Celery Flower Service
+After=network.target
+
+[Service]
+User=root
+Group=root
+WorkingDirectory=/path/to/django/
+
+Environment="DJANGO_SETTINGS_MODULE=config.settings"
+Environment="PYTHONPATH=/path/to/my/modules:$PYTHONPATH"
+EnvironmentFile=/path/to/prod.env
+
+ExecStart=/path/to/venv/bin/celery -A config flower \
+    --broker=${CELERY_BROKER_URL} \
+    --basic_auth=${FLOWER_BASIC_AUTH} \
+    --port=5555 \
+    --loglevel=info
+
+Restart=always
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,110 @@
+services:
+  migrate:
+    build:
+      context: ../
+      dockerfile: ./deploy/Dockerfile.dev
+    image: django-migrate
+    container_name: migrate
+    env_file:
+      - ./.env
+    depends_on:
+      - postgres
+    volumes:
+      - ../:/app
+      - media_data:/app/media
+    command: sh -c "python manage.py migrate && python /app/createsuperuser.py"
+
+  gunicorn:
+    build:
+      context: ../
+      dockerfile: ./deploy/Dockerfile.dev
+    image: django-gunicorn
+    container_name: gunicorn
+    env_file:
+      - ./.env
+    ports:
+      - "8000:8000"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_started
+    volumes:
+      - media_data:/app/media
+      - ../:/app
+    command: python manage.py runserver 0.0.0.0:8000
+
+  celery:
+    build:
+      context: ../
+      dockerfile: ./deploy/Dockerfile.dev
+    image: django-celery
+    container_name: celery
+    env_file:
+      - ./.env
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_started
+    volumes:
+      - ../:/app
+    command: celery -A config worker --loglevel=info
+
+  celery-beat:
+    build:
+      context: ../
+      dockerfile: ./deploy/Dockerfile.dev
+    image: django-celery-beat
+    container_name: celery-beat
+    env_file:
+      - ./.env
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_started
+    volumes:
+      - ../:/app
+    command: celery -A config beat --loglevel=info
+
+  flower:
+    build:
+      context: ../
+      dockerfile: ./deploy/Dockerfile.dev
+    image: django-flower
+    container_name: flower
+    env_file:
+      - ./.env
+    depends_on:
+      - redis
+      - celery
+    command: sh -c "celery -A config flower --broker=${CELERY_BROKER_URL} --port=5555 --basic_auth=${FLOWER_BASIC_AUTH}"
+    ports:
+      - "5555:5555"
+
+  redis:
+    image: redis:8
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  postgres: 
+    image: postgres:17.2
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    env_file:
+      - ./.env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  media_data:
+  redis_data:
+  postgres_data:
+
+# DJANGO MIGRATE: docker compose -f docker-compose.dev.yml exec gunicorn python manage.py migrate
+

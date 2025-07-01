@@ -1,0 +1,27 @@
+[Unit]
+Description=Celery Worker Service
+After=network.target
+
+[Service]
+User=root
+Group=root
+WorkingDirectory=/path/to/django/
+
+Environment="DJANGO_SETTINGS_MODULE=config.settings"
+Environment="PYTHONPATH=/path/to/my/modules:$PYTHONPATH"
+EnvironmentFile=/path/to/prod.env
+
+ExecStart=/path/to/venv/bin/celery -A config worker \
+    --loglevel=info \
+    --without-heartbeat \
+    --without-mingle \
+    --autoscale=4,1 \
+    --concurrency=2
+
+Restart=always
+
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
