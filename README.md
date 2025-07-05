@@ -19,6 +19,7 @@ A ready-to-use Django project template for the rapid development and deployment 
 - **Separated dev/prod environments** (different docker-compose and .env files)
 - **Comprehensive Django boilerplate examples** — from models, serializers, and URL routing to endpoint tests, providing a solid foundation and reference for rapid development
 - **Email sending with HTML templates** using Celery for asynchronous delivery, including a ready-to-use modern email template (`templates/emails/notification.html`)
+- **Simple permission** use custom permision (`utils/permissions/IsAdminOrReadOnly`) as an example.
 
 ---
 
