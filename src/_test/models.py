@@ -38,7 +38,7 @@ class Product(CreatedAtMixin):
     It is example of how to use GinIndex for a full-text search and
     using resized image field with deleting image-file after deleting record.
 
-    For deleting image-file need to set up pre-delete receivers in the receivers.py
+    For deleting image-file need to set up delete receivers in the receivers.py
     """
     name = models.CharField(max_length=50)
     slug = models.SlugField(unique=True, blank=True)
@@ -53,7 +53,7 @@ class Product(CreatedAtMixin):
         return super().save(*args, **kwargs)
     
     def __str__(self):
-        return f"{self.name} - {self.slug}"
+        return f"{self.name}"
 
     class Meta:
         db_table = 'products'
