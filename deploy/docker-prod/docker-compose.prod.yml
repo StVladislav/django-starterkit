@@ -8,10 +8,11 @@ services:
     env_file:
       - /path/to/.env
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     volumes:
       - media_data:/app/media
-    command: sh -c "python manage.py migrate && python /app/createsuperuser.py"
+    command: sh -c "python /app/apply_migrations_and_create_superuser.py"
 
   gunicorn:
     build:
@@ -28,6 +29,8 @@ services:
         condition: service_completed_successfully
       redis:
         condition: service_started
+      postgres:
+        condition: service_healthy
     volumes:
       - media_data:/app/media
     command: python manage.py runserver 0.0.0.0:8000
@@ -94,6 +97,11 @@ services:
       - /path/to/.env
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
 volumes:
   media_data:

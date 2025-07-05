@@ -45,13 +45,6 @@ class Product(CreatedAtMixin):
     category = models.ForeignKey(
         ProductCategory,
         on_delete=models.CASCADE,
-        default=""
-    )
-    image = ResizedImageField(
-        upload_to = "images",
-        blank=True,
-        null=True,
-        verbose_name='Изображение'
     )
 
     def save(self, *args, **kwargs):
@@ -72,3 +65,24 @@ class Product(CreatedAtMixin):
                 opclasses=['gin_trgm_ops', 'gin_trgm_ops',]
             )
         ]
+
+
+class ProductImage(CreatedAtMixin):
+    image = ResizedImageField(
+        upload_to="images",
+        blank=True,
+        null=True,
+        verbose_name='Product image'
+    )
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        related_name="images"
+    )
+    is_main = models.BooleanField(
+        default=False,
+        verbose_name="Is image main?",
+    )
+
+    def __str__(self):
+        return f"{self.product.slug}"
