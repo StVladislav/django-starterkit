@@ -67,6 +67,8 @@ After this, the following will be available:
 - Django: http://localhost:8000/admin
 - Flower: http://localhost:5555
 
+**P.S. use *admin@datalizecrm.com* as the login and _123_ as the password for sign in to admin. You can change it into .env file**
+
 3. **That's it!**  
    You can start developing right away without spending time on environment setup.
 
