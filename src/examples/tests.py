@@ -1,7 +1,7 @@
 from django.urls import reverse
 from rest_framework.test import APITestCase
 from rest_framework import status
-from src._test.models import Product, ProductCategory
+from src.examples.models import Product, ProductCategory
 
 
 class SearchProductTest(APITestCase):
@@ -10,7 +10,7 @@ class SearchProductTest(APITestCase):
     
     For local running use: 
     
-    >>> python manage.py test _test
+    >>> python manage.py test examples
 
     P.S. If you perform it on a Windows machine and encounter the error related to path 
     set this in opened terminal:
@@ -19,7 +19,7 @@ class SearchProductTest(APITestCase):
 
     OR for local docker
 
-    >>> docker compose -f docker-compose.dev.yml exec gunicorn python manage.py test _test
+    >>> docker compose -f docker-compose.dev.yml exec gunicorn python manage.py test examples
     """
     def setUp(self):
         category = ProductCategory.objects.create(name="Electronics")

@@ -1,7 +1,7 @@
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
 
-from src._test.models import ProductImage
+from src.examples.models import ProductImage
 
 
 @receiver(post_delete, sender=ProductImage)

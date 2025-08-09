@@ -27,7 +27,7 @@ A ready-to-use Django project template for the rapid development and deployment 
 
 - `config/` — Django settings
 - `utils/` — helper utilities
-- `src._test/` — API, Celery, full-text search, serializers and etc. examples
+- `src.examples/` — API, Celery, full-text search, serializers and etc. examples
 - `src.authentication/` — everything related to authentication and the User model
 - `deploy/docker-compose.dev.yml` — launches all services for development
 - `deploy/docker-prod/` — production files (docker-compose, Dockerfile, .env)
@@ -76,10 +76,10 @@ After this, the following will be available:
 
 ## Celery API Usage Examples
 
-### 1. Launch a test Celery task (`src._test.views.run_celery_task`)
+### 1. Launch a test Celery task (`src.examples.views.run_celery_task`)
 
 ```
-curl -X GET http://localhost:8000/api/test/run_celery_task/
+curl -X GET http://localhost:8000/api/examples/run_celery_task/
 ```
 
 **Response:**
@@ -92,10 +92,10 @@ JSON
 }
 ```
 
-### 2. Check task status by ID (`src._test.views.check_celery_task`)
+### 2. Check task status by ID (`src.examples.views.check_celery_task`)
 
 ```
-curl -X GET http://localhost:8000/api/test/check_celery_task/<task_id>/
+curl -X GET http://localhost:8000/api/examples/check_celery_task/<task_id>/
 ```
 
 Replace `<task_id>` with the value from the previous response.
@@ -103,7 +103,7 @@ Replace `<task_id>` with the value from the previous response.
 **Example:**
 
 ```
-curl -X GET http://localhost:8000/api/test/check_celery_task/f2c6c8c3-7b5e-4f8e-8c3e-...
+curl -X GET http://localhost:8000/api/examples/check_celery_task/f2c6c8c3-7b5e-4f8e-8c3e-...
 ```
 
 **Possible responses:**
@@ -131,12 +131,12 @@ JSON
 
 ---
 
-## Product Search API Example (Full-text search, `src._test.views.search_product`)
+## Product Search API Example (Full-text search, `src.examples.views.search_product`)
 
-For demonstration, the abstract product model `src._test.models.Product` is used, with the appropriate index defined.
+For demonstration, the abstract product model `src.examples.models.Product` is used, with the appropriate index defined.
 
 ```
-curl -X GET "http://localhost:8000/api/test/product_search/?q=name"
+curl -X GET "http://localhost:8000/api/examples/product_search/?q=name"
 ```
 
 ---
@@ -152,18 +152,18 @@ curl -X GET "http://localhost:8000/api/test/product_search/?q=name"
 ### 2. Celery & Flower Integration
 
 - Fast launch and monitoring of background tasks
-- API examples for task launching and status checking (`src._test.tasks` and `src._test.views`)
+- API examples for task launching and status checking (`src.examples.tasks` and `src.examples.views`)
 - Ready-to-use systemd units for production (`./deploy/systemd`)
 
 ### 3. PostgreSQL + Trigram Search
 
-- Model example with GinIndex and trigram for fast search (`src._test.models`)
-- API example for searching by name (`src._test.views`)
+- Model example with GinIndex and trigram for fast search (`src.examples.models`)
+- API example for searching by name (`src.examples.views`)
 
 ### 4. Image Processing
 
 - Custom ResizedImageField with webp support (`utils.fields.ResizedImageField`)
-- Example of automatic file cleanup on object deletion (`src._test.receivers`)
+- Example of automatic file cleanup on object deletion (`src.examples.receivers`)
 
 ### 5. Environment Separation
 
@@ -219,7 +219,7 @@ To test email sending via Celery from the Django shell:
 2.  Import the task and trigger an email:
 
     ```
-    from src._test.tasks import send_email_notification
+    from src.examples.tasks import send_email_notification
     from datetime import datetime
 
     send_email_notification.delay(
@@ -262,17 +262,17 @@ $env:PYTHONPATH="src"
 
 ---
 
-### Tests for the `_test` Demo App
+### Tests for the `examples` Demo App
 
 - The example of a test for the product search endpoint.
 - Illustrates how to write tests for business logic and API.
 
-Tests are located in `src._test.tests`.
+Tests are located in `src.examples.tests`.
 
 To run the tests:
 
 ```
-python manage.py test _test
+python manage.py test examples
 ```
 
 _Note for Windows users:_ set the environment variable before running:

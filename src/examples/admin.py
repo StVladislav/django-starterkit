@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.html import format_html
 
-from src._test.models import Product, ProductCategory, ProductImage
+from src.examples.models import Product, ProductCategory, ProductImage
 
 
 """

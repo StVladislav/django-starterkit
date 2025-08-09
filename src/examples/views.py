@@ -2,13 +2,12 @@ from rest_framework.decorators import api_view
 from django.contrib.postgres.search import TrigramSimilarity
 from rest_framework.response import Response
 from rest_framework import status, viewsets
-from rest_framework.permissions import IsAdminUser
 from django.db.models import Q
 from celery.result import AsyncResult
 
-from src._test.models import Product
-from src._test.tasks import celery_task
-from src._test.serializers import ProductSerializer
+from src.examples.models import Product
+from src.examples.tasks import celery_task
+from src.examples.serializers import ProductSerializer
 
 from utils.permissions import IsAdminOrReadOnly
 
@@ -18,7 +17,7 @@ def search_product(request):
     """
     It is an example for finding records by few fields with full-text search using gin index.
 
-    curl -X get "http://localhost:8000/api/test/product_search/?q=name"
+    curl -X get "http://localhost:8000/api/examples/product_search/?q=name"
     """
     search_query = request.GET.get('q', '').strip()
     n_results = 10 # Number of returned records
@@ -49,7 +48,7 @@ def run_celery_task(request):
     """
     Simple view for run a specified celery task.
 
-    curl -X GET http://localhost:8000/api/test/run_celery_task/
+    curl -X GET http://localhost:8000/api/examples/run_celery_task/
 
     DONT FORGET SET UP PERMISSIONS IN PRODUCTION
     """
@@ -66,7 +65,7 @@ def check_celery_task(request, task_id):
     """
     Simple view for check running celery task by its id.
 
-    curl -X GET http://localhost:8000/api/test/check_celery_task/<task_id>/
+    curl -X GET http://localhost:8000/api/examples/check_celery_task/<task_id>/
 
     DONT FORGET SET UP PERMISSIONS IN PRODUCTION
     """
@@ -86,13 +85,13 @@ class ProductView(viewsets.ModelViewSet):
 
     Example:
     [GET]
-    >>> curl -X GET http://localhost:8000/api/test/products/
+    >>> curl -X GET http://localhost:8000/api/examples/products/
     [POST]
     1. Getting auth token
     >>> curl -X POST http://localhost:8000/api/auth/token/login/ -H "Content-Type: application/json" \
         -d '{"email": "admin@datalizecrm.com", "password": "123"}'
     2. Adding new product with 1 category. Its should be created. Add received token to the request
-    >>> curl -X POST http://localhost:8000/api/test/products/ \
+    >>> curl -X POST http://localhost:8000/api/examples/products/ \
         -H "Content-Type: application/json" \
         -H "Authorization: Token token_from_previous_step" \
         -d '{"name": "New Product", "category": 1}'

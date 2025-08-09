@@ -24,6 +24,7 @@ def create_pg_trgm_extension():
     with connection.cursor() as cursor:
         cursor.execute("CREATE EXTENSION IF NOT EXISTS pg_trgm;")
 
+
 def main():
     from src.authentication.models import User
 

@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'django_celery_beat', # use this if you want to run celery periodic tasks from database (e.g. manage from django-admin)
     # Project apps
     'src.authentication',
-    'src._test', # you can disable this app for a production
+    'src.examples', # you can disable this app for a production
 ]
 
 MIDDLEWARE = [

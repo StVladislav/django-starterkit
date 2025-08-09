@@ -36,7 +36,7 @@ class Migration(migrations.Migration):
                 ('updated_at', models.DateTimeField(auto_now_add=True, null=True, verbose_name='Updated')),
                 ('name', models.CharField(max_length=50)),
                 ('slug', models.SlugField(blank=True, unique=True)),
-                ('category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='_test.productcategory')),
+                ('category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='examples.productcategory')),
             ],
             options={
                 'db_table': 'products',
@@ -51,7 +51,7 @@ class Migration(migrations.Migration):
                 ('updated_at', models.DateTimeField(auto_now_add=True, null=True, verbose_name='Updated')),
                 ('image', utils.fields.ResizedImageField(blank=True, crop=None, force_format='WEBP', keep_meta=False, null=True, quality=80, scale=None, size=[1024, 768], upload_to='images', verbose_name='Product image')),
                 ('is_main', models.BooleanField(default=False, verbose_name='Is image main?')),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='images', to='_test.product')),
+                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='images', to='examples.product')),
             ],
             options={
                 'abstract': False,
